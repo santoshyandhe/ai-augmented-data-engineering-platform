@@ -1,0 +1,161 @@
+database:
+  name: customer_analytics
+  dialect: postgres
+  version: "1.0"
+
+tables:
+
+  - name: customers
+    description: Master customer information table
+    primary_key: customer_id
+
+    columns:
+      - name: customer_id
+        type: BIGINT
+        description: Unique customer identifier
+
+      - name: first_name
+        type: VARCHAR
+        description: Customer first name
+
+      - name: last_name
+        type: VARCHAR
+        description: Customer last name
+
+      - name: email
+        type: VARCHAR
+        description: Customer email address
+
+      - name: date_of_birth
+        type: DATE
+        description: Customer birth date
+
+      - name: created_at
+        type: TIMESTAMP
+        description: Customer onboarding timestamp
+
+      - name: customer_segment
+        type: VARCHAR
+        description: Customer segment classification
+
+
+  - name: accounts
+    description: Customer account details
+    primary_key: account_id
+
+    columns:
+      - name: account_id
+        type: BIGINT
+        description: Unique account identifier
+
+      - name: customer_id
+        type: BIGINT
+        description: Customer identifier
+
+      - name: account_type
+        type: VARCHAR
+        description: Type of account
+
+      - name: account_status
+        type: VARCHAR
+        description: Account status
+
+      - name: opened_date
+        type: DATE
+        description: Account opening date
+
+      - name: balance
+        type: NUMERIC
+        description: Current account balance
+
+
+  - name: transactions
+    description: Financial transaction records
+    primary_key: transaction_id
+
+    columns:
+      - name: transaction_id
+        type: BIGINT
+        description: Unique transaction identifier
+
+      - name: account_id
+        type: BIGINT
+        description: Account identifier
+
+      - name: transaction_date
+        type: TIMESTAMP
+        description: Transaction timestamp
+
+      - name: transaction_type
+        type: VARCHAR
+        description: Transaction type
+
+      - name: amount
+        type: NUMERIC
+        description: Transaction amount
+
+      - name: merchant_name
+        type: VARCHAR
+        description: Merchant information
+
+      - name: fraud_flag
+        type: BOOLEAN
+        description: Fraud indicator
+
+
+  - name: loans
+    description: Customer loan information
+    primary_key: loan_id
+
+    columns:
+      - name: loan_id
+        type: BIGINT
+        description: Unique loan identifier
+
+      - name: customer_id
+        type: BIGINT
+        description: Customer identifier
+
+      - name: loan_type
+        type: VARCHAR
+        description: Loan category
+
+      - name: loan_amount
+        type: NUMERIC
+        description: Approved loan amount
+
+      - name: interest_rate
+        type: NUMERIC
+        description: Loan interest rate
+
+      - name: loan_status
+        type: VARCHAR
+        description: Current loan status
+
+      - name: issued_date
+        type: DATE
+        description: Loan issued date
+
+
+relationships:
+
+  - from_table: accounts
+    from_column: customer_id
+    to_table: customers
+    to_column: customer_id
+
+  - from_table: transactions
+    from_column: account_id
+    to_table: accounts
+    to_column: account_id
+
+  - from_table: loans
+    from_column: customer_id
+    to_table: customers
+    to_column: customer_id
+
+
+metadata:
+  source_system: postgres
+  catalog_version: "2026.05.06"
+  last_refreshed_at: "2026-05-06T10:00:00Z"

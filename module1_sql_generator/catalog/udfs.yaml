@@ -1,0 +1,125 @@
+udfs:
+
+  - name: fn_calc_customer_ltv
+    signature: fn_calc_customer_ltv(customer_id BIGINT, as_of_date DATE)
+    return_type: NUMERIC
+
+    description: |
+      Calculates customer lifetime value based on historical
+      transaction activity, product holdings, and profitability metrics.
+
+    example_usage: |
+      SELECT fn_calc_customer_ltv(c.customer_id, CURRENT_DATE)
+      FROM customers c
+
+    tags:
+      - customer
+      - revenue
+      - profitability
+      - ltv
+      - lifetime_value
+
+    business_domain: customer_analytics
+
+    last_refreshed_at: "2026-05-06T10:00:00Z"
+
+
+  - name: fn_is_fraud_flagged
+    signature: fn_is_fraud_flagged(transaction_id BIGINT)
+    return_type: BOOLEAN
+
+    description: |
+      Returns TRUE if the transaction has been flagged
+      by the fraud detection engine.
+
+    example_usage: |
+      SELECT fn_is_fraud_flagged(t.transaction_id)
+      FROM transactions t
+
+    tags:
+      - fraud
+      - risk
+      - compliance
+      - security
+
+    business_domain: fraud_detection
+
+    last_refreshed_at: "2026-05-06T10:00:00Z"
+
+
+  - name: fn_customer_risk_score
+    signature: fn_customer_risk_score(customer_id BIGINT)
+    return_type: NUMERIC
+
+    description: |
+      Calculates customer financial risk score using
+      transaction behavior, delinquency history,
+      and exposure models.
+
+    example_usage: |
+      SELECT fn_customer_risk_score(c.customer_id)
+      FROM customers c
+
+    tags:
+      - risk
+      - customer
+      - credit_risk
+      - scoring
+
+    business_domain: risk_management
+
+    last_refreshed_at: "2026-05-06T10:00:00Z"
+
+
+  - name: fn_mask_account_number
+    signature: fn_mask_account_number(account_number VARCHAR)
+    return_type: VARCHAR
+
+    description: |
+      Masks sensitive account numbers for secure reporting
+      and compliance purposes.
+
+    example_usage: |
+      SELECT fn_mask_account_number(a.account_number)
+      FROM accounts a
+
+    tags:
+      - pii
+      - masking
+      - security
+      - compliance
+
+    business_domain: data_security
+
+    last_refreshed_at: "2026-05-06T10:00:00Z"
+
+
+  - name: fn_calculate_loan_eligibility
+    signature: fn_calculate_loan_eligibility(customer_id BIGINT, requested_amount NUMERIC)
+    return_type: BOOLEAN
+
+    description: |
+      Determines whether a customer qualifies for a loan
+      based on credit score, income, liabilities,
+      and internal eligibility policies.
+
+    example_usage: |
+      SELECT fn_calculate_loan_eligibility(c.customer_id, 50000)
+      FROM customers c
+
+    tags:
+      - loan
+      - lending
+      - eligibility
+      - underwriting
+
+    business_domain: lending
+
+    last_refreshed_at: "2026-05-06T10:00:00Z"
+
+
+metadata:
+  source_system: postgres
+  catalog_version: "2026.05.06"
+  total_udfs: 5
+  last_refreshed_at: "2026-05-06T10:00:00Z"
