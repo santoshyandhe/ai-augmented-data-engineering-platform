@@ -154,3 +154,6 @@ Testing	Pytest
 # Demo Screenshot
 
 ![Module 1 CLI Demo](docs/screenshots/module1_cli_demo.png)
+<img width="2530" height="1583" alt="module1_cli_demo" src="https://github.com/user-attachments/assets/0e236de5-7ad0-41b2-8c8b-129d5f667b22" />
+<img width="1010" height="1557" alt="ChatGPT Image May 6, 2026, 08_33_50 PM" src="https://github.com/user-attachments/assets/df2d2551-7374-4ac4-bb29-dddc3634d787" />
+
