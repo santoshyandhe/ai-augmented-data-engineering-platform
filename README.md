@@ -150,3 +150,7 @@ Prompt Templating	Jinja2
 CLI	Typer
 Console UI	Rich
 Testing	Pytest
+
+# Demo Screenshot
+
+![Module 1 CLI Demo](docs/screenshots/module1_cli_demo.png)
