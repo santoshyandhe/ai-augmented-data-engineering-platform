@@ -151,5 +151,6 @@ CLI	Typer
 Console UI	Rich
 Testing	Pytest
 
+<img width="1010" height="1557" alt="ChatGPT Image May 6, 2026, 08_33_50 PM" src="https://github.com/user-attachments/assets/be51a0f7-129e-4f71-bf59-87ffb15d9ba6" />
 
 
