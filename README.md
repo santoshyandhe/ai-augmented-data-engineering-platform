@@ -85,12 +85,16 @@ ai-augmented-data-engineering-platform/
         ├── test_retriever.py
         └── test_validator.py
 
+## Architecture Overview
 
-Features
+![Module 1 Architecture](docs/screenshots/module1_architecture.png)
 
-Schema-Aware SQL Generation
 
-The generator uses database schema metadata to:
+## Features
+
+## Schema-Aware SQL Generation
+
+## The generator uses database schema metadata to:
 
 identify valid tables
 identify valid columns
@@ -98,14 +102,14 @@ reduce hallucinations
 improve SQL correctness
 UDF-Aware Query Generation
 
-The system dynamically retrieves relevant reusable UDFs using:
+## The system dynamically retrieves relevant reusable UDFs using:
 
 UDF metadata
 tags
 descriptions
 business domains
 
-This enables reusable business logic instead of duplicating calculations inline.
+## This enables reusable business logic instead of duplicating calculations inline.
 
 Structured Reasoning Trace
 
@@ -118,7 +122,7 @@ selected UDFs
 assumptions
 warnings
 
-This improves explainability and auditability.
+## This improves explainability and auditability.
 
 Static SQL Validation
 
@@ -134,7 +138,7 @@ UDF existence
 UDF argument counts
 Database EXPLAIN / Dry Run
 
-DuckDB-based EXPLAIN validation ensures:
+## DuckDB-based EXPLAIN validation ensures:
 
 query plan generation
 parser acceptance
@@ -151,6 +155,6 @@ CLI	Typer
 Console UI	Rich
 Testing	Pytest
 
-<img width="1010" height="1557" alt="ChatGPT Image May 6, 2026, 08_33_50 PM" src="https://github.com/user-attachments/assets/be51a0f7-129e-4f71-bf59-87ffb15d9ba6" />
+
 
 
