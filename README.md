@@ -9,7 +9,7 @@ This repository contains solutions for the **AI-Augmented Data Engineering Platf
 | Module | Description | Status |
 |---|---|---|
 | Module 1 | Intelligent SQL Generator | ✅ Completed |
-| Module 2 | Intelligent Data Transformation Recommendation Engine | 🚧 Planned |
+| Module 2 | Intelligent Data Transformation Recommendation Engine | ✅ Completed |
 | Module 3 | Natural Language to Pipeline Generator | 🚧 Planned |
 | Module 4 | Intelligent Data Quality & Anomaly Detection | 🚧 Planned |
 
