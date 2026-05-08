@@ -28,6 +28,7 @@ The system supports:
 - Structured reasoning traces
 - Static SQL validation
 - Database EXPLAIN / dry-run validation
+- Streamlit UI integration
 - Modular enterprise-style architecture
 
 ---
@@ -72,7 +73,11 @@ ai-augmented-data-engineering-platform/
 ├── docs/
 │   └── screenshots/
 │       ├── module1_architecture.png
-│       └── module1_cli_demo.png
+│       ├── module1_cli_demo.png
+│       ├── streamlit_home.png
+│       ├── streamlit_generation.png
+│       ├── streamlit_validation.png
+│       └── pytest_success.png
 │
 └── module1_sql_generator/
     ├── DESIGN.md
@@ -98,10 +103,12 @@ ai-augmented-data-engineering-platform/
     │   ├── database_adapter.py
     │   └── cli.py
     │
-    └── tests/
-        ├── test_catalog_loader.py
-        ├── test_retriever.py
-        └── test_validator.py
+    ├── tests/
+    │   ├── test_catalog_loader.py
+    │   ├── test_retriever.py
+    │   └── test_validator.py
+    │
+    └── app.py
 ```
 
 ---
@@ -172,9 +179,48 @@ DuckDB-based EXPLAIN validation ensures:
 
 ---
 
+## ✅ Interactive Streamlit UI
+
+The project includes a Streamlit-based UI for:
+
+- Natural language SQL generation
+- Validation visualization
+- EXPLAIN plan inspection
+- Interactive demos
+
+---
+
+# Streamlit Demo
+
+## Run Streamlit Application
+
+```bash
+streamlit run module1_sql_generator/app.py
+```
+
+---
+
+## Streamlit Home Screen
+
+![Streamlit Home](docs/screenshots/streamlit_home.png)
+
+---
+
+## SQL Generation Demo
+
+![Streamlit SQL Generation](docs/screenshots/streamlit_generation.png)
+
+---
+
+## Validation & EXPLAIN Demo
+
+![Streamlit Validation](docs/screenshots/streamlit_validation.png)
+
+---
+
 # CLI Demo
 
-## Run Command
+## Run CLI Command
 
 ```bash
 python -m module1_sql_generator.src.cli "show top 10 customers by lifetime value"
@@ -182,13 +228,7 @@ python -m module1_sql_generator.src.cli "show top 10 customers by lifetime value
 
 ---
 
-## Demo Screenshot
-
-![Module 1 CLI Demo](docs/screenshots/module1_cli_demo.png)
-
----
-
-# Example Prompt
+## Example Prompt
 
 ```text
 show top 10 customers by lifetime value
@@ -196,9 +236,9 @@ show top 10 customers by lifetime value
 
 ---
 
-# Example Output
+## Example Output
 
-## Generated SQL
+### Generated SQL
 
 ```sql
 WITH customer_ltv AS (
@@ -221,7 +261,7 @@ LIMIT 10;
 
 ---
 
-## Reasoning Trace
+### Reasoning Trace
 
 ```text
 1. Used a CTE to calculate lifetime value for each customer using the provided UDF.
@@ -230,12 +270,34 @@ LIMIT 10;
 
 ---
 
-## Validation Status
+### Validation Status
 
 ```text
 Validation Status: PASSED
 EXPLAIN Status: PASSED
 ```
+
+---
+
+# Testing
+
+## Run Tests
+
+```bash
+python -m pytest
+```
+
+Expected:
+
+```text
+10 passed
+```
+
+---
+
+## Pytest Success Screenshot
+
+![Pytest Success](docs/screenshots/pytest_success.png)
 
 ---
 
@@ -250,6 +312,7 @@ EXPLAIN Status: PASSED
 | Local Database | DuckDB |
 | Prompt Templating | Jinja2 |
 | CLI | Typer |
+| Web UI | Streamlit |
 | Console UI | Rich |
 | Testing | Pytest |
 
@@ -299,20 +362,6 @@ Create a `.env` file in the project root:
 ```env
 OPENAI_API_KEY=your_openai_api_key
 LLM_MODEL=gpt-4o-mini
-```
-
----
-
-# Running Tests
-
-```bash
-python -m pytest
-```
-
-Expected:
-
-```text
-10 passed
 ```
 
 ---
@@ -373,6 +422,7 @@ This project demonstrates a production-oriented approach to AI-assisted SQL gene
 - Controlled prompting
 - Validation layers
 - Explainability
+- Streamlit UI integration
 - Modular architecture
 
 The implementation prioritizes:
