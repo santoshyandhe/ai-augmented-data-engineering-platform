@@ -1,0 +1,22 @@
+{
+    "artifact_type": "yaml",
+    "file_name": "pipeline_config.yaml",
+    "pipeline_name": "customer_summary_pipeline",
+    "schedule": "daily",
+    "owner": "data_engineering",
+    "sources": [
+        "raw.customers",
+        "raw.orders"
+    ],
+    "target": "mart.customer_summary",
+    "quality_checks": [
+        "customer_id_not_null",
+        "total_revenue_non_negative"
+    ],
+    "dependencies": [
+        "raw.customers",
+        "raw.orders"
+    ],
+    "confidence_score": 0.9,
+    "parser": "pyyaml"
+}

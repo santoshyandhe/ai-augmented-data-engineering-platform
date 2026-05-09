@@ -1,0 +1,12 @@
+{
+    "gap_count": 1,
+    "gaps": [
+        {
+            "file_name": "customer_etl.py",
+            "artifact_type": "python_etl",
+            "gap_type": "low_confidence",
+            "description": "Analyzer confidence is 0.78. Human review is recommended.",
+            "severity": "medium"
+        }
+    ]
+}

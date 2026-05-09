@@ -1,0 +1,33 @@
+{
+    "artifact_type": "dag",
+    "file_name": "customer_dag.py",
+    "dag_id": "customer_summary_dag",
+    "schedule": "@daily",
+    "functions": [
+        "extract_customers",
+        "transform_customer_summary",
+        "load_customer_summary"
+    ],
+    "tasks": [
+        {
+            "task_id": "extract_customers",
+            "callable": "extract_customers"
+        },
+        {
+            "task_id": "transform_customer_summary",
+            "callable": "transform_customer_summary"
+        },
+        {
+            "task_id": "load_customer_summary",
+            "callable": "load_customer_summary"
+        }
+    ],
+    "dependencies": [
+        {
+            "upstream_task_variable": "extract_task",
+            "downstream_task_variable": "transform_task"
+        }
+    ],
+    "confidence_score": 0.82,
+    "parser": "python_ast_airflow_static"
+}

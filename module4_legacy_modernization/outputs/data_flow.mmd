@@ -1,0 +1,9 @@
+flowchart LR
+    "extract_task" --> "transform_task"
+    "pd.read_csv('data/customers.csv')" --> "summary.to_csv('output/customer_summary.csv', index=False)"
+    "pd.read_csv('data/orders.csv')" --> "summary.to_csv('output/customer_summary.csv', index=False)"
+    "mart.customer_summary" --> "mart.customer_summary"
+    "raw.customers AS c" --> "mart.customer_summary"
+    "raw.orders AS o" --> "mart.customer_summary"
+    "raw.customers" --> "mart.customer_summary"
+    "raw.orders" --> "mart.customer_summary"

@@ -1,0 +1,7 @@
+pyyaml
+sqlparse
+pytest
+sqlglot
+openai-agents
+python-dotenv
+streamlit

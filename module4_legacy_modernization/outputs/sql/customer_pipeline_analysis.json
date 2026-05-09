@@ -1,0 +1,70 @@
+{
+    "artifact_type": "sql",
+    "file_name": "customer_pipeline.sql",
+    "source_tables": [
+        {
+            "table_name": "mart.customer_summary",
+            "columns_used": []
+        },
+        {
+            "table_name": "raw.customers AS c",
+            "columns_used": [
+                "customer_id",
+                "first_name",
+                "last_name"
+            ]
+        },
+        {
+            "table_name": "raw.orders AS o",
+            "columns_used": [
+                "customer_id",
+                "order_amount",
+                "order_date",
+                "order_id"
+            ]
+        }
+    ],
+    "target_table": {
+        "table_name": "mart.customer_summary",
+        "columns": [
+            "customer_id",
+            "first_name",
+            "last_name",
+            "total_revenue",
+            "order_count"
+        ]
+    },
+    "transformations": {
+        "selected_columns": [
+            "c.customer_id",
+            "c.first_name",
+            "c.last_name",
+            "SUM(o.order_amount) AS total_revenue",
+            "COUNT(o.order_id) AS order_count"
+        ],
+        "joins": [
+            "JOIN raw.orders AS o ON c.customer_id = o.customer_id"
+        ],
+        "filters": [
+            "o.order_date >= '2024-01-01'"
+        ],
+        "aggregations": [
+            "SUM(o.order_amount)",
+            "COUNT(o.order_id)"
+        ],
+        "group_by": [
+            "c.customer_id",
+            "c.first_name",
+            "c.last_name"
+        ],
+        "order_by": [],
+        "limit": null
+    },
+    "dependencies": [
+        "mart.customer_summary",
+        "raw.customers AS c",
+        "raw.orders AS o"
+    ],
+    "confidence_score": 0.92,
+    "parser": "sqlglot"
+}

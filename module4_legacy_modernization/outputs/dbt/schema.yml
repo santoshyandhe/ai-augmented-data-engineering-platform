@@ -1,0 +1,36 @@
+version: 2
+models:
+- name: customer_summary
+  description: Migrated dbt model generated from legacy SQL analysis.
+  columns:
+  - name: customer_id
+    tests:
+    - not_null
+  - name: first_name
+    tests: []
+  - name: last_name
+    tests: []
+  - name: total_revenue
+    tests: []
+  - name: order_count
+    tests: []
+sources:
+- name: mart
+  tables:
+  - name: customer_summary
+    columns: []
+- name: raw
+  tables:
+  - name: customers AS c
+    columns:
+    - name: customer_id
+    - name: first_name
+    - name: last_name
+- name: raw
+  tables:
+  - name: orders AS o
+    columns:
+    - name: customer_id
+    - name: order_amount
+    - name: order_date
+    - name: order_id

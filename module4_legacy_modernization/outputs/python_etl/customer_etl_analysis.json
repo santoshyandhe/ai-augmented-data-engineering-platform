@@ -1,0 +1,25 @@
+{
+    "artifact_type": "python_etl",
+    "file_name": "customer_etl.py",
+    "functions": [
+        "run_customer_etl"
+    ],
+    "sources": [
+        "pd.read_csv('data/customers.csv')",
+        "pd.read_csv('data/orders.csv')"
+    ],
+    "targets": [
+        "summary.to_csv('output/customer_summary.csv', index=False)"
+    ],
+    "transformations": [
+        "aggregation",
+        "group_by",
+        "merge/join"
+    ],
+    "dependencies": [
+        "pd.read_csv('data/customers.csv')",
+        "pd.read_csv('data/orders.csv')"
+    ],
+    "confidence_score": 0.78,
+    "parser": "python_ast"
+}

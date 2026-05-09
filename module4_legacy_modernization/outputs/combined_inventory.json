@@ -1,0 +1,158 @@
+{
+    "artifacts_analyzed": [
+        {
+            "artifact_type": "dag",
+            "file_name": "customer_dag.py",
+            "dag_id": "customer_summary_dag",
+            "schedule": "@daily",
+            "functions": [
+                "extract_customers",
+                "transform_customer_summary",
+                "load_customer_summary"
+            ],
+            "tasks": [
+                {
+                    "task_id": "extract_customers",
+                    "callable": "extract_customers"
+                },
+                {
+                    "task_id": "transform_customer_summary",
+                    "callable": "transform_customer_summary"
+                },
+                {
+                    "task_id": "load_customer_summary",
+                    "callable": "load_customer_summary"
+                }
+            ],
+            "dependencies": [
+                {
+                    "upstream_task_variable": "extract_task",
+                    "downstream_task_variable": "transform_task"
+                }
+            ],
+            "confidence_score": 0.82,
+            "parser": "python_ast_airflow_static",
+            "output_file": "C:\\Users\\santo\\DataEngineer\\Trendytech Superstar\\projects\\ai-augmented-data-engineering-platform\\module4_legacy_modernization\\outputs\\dag\\customer_dag_analysis.json"
+        },
+        {
+            "artifact_type": "python_etl",
+            "file_name": "customer_etl.py",
+            "functions": [
+                "run_customer_etl"
+            ],
+            "sources": [
+                "pd.read_csv('data/customers.csv')",
+                "pd.read_csv('data/orders.csv')"
+            ],
+            "targets": [
+                "summary.to_csv('output/customer_summary.csv', index=False)"
+            ],
+            "transformations": [
+                "aggregation",
+                "group_by",
+                "merge/join"
+            ],
+            "dependencies": [
+                "pd.read_csv('data/customers.csv')",
+                "pd.read_csv('data/orders.csv')"
+            ],
+            "confidence_score": 0.78,
+            "parser": "python_ast",
+            "output_file": "C:\\Users\\santo\\DataEngineer\\Trendytech Superstar\\projects\\ai-augmented-data-engineering-platform\\module4_legacy_modernization\\outputs\\python_etl\\customer_etl_analysis.json"
+        },
+        {
+            "artifact_type": "sql",
+            "file_name": "customer_pipeline.sql",
+            "source_tables": [
+                {
+                    "table_name": "mart.customer_summary",
+                    "columns_used": []
+                },
+                {
+                    "table_name": "raw.customers AS c",
+                    "columns_used": [
+                        "customer_id",
+                        "first_name",
+                        "last_name"
+                    ]
+                },
+                {
+                    "table_name": "raw.orders AS o",
+                    "columns_used": [
+                        "customer_id",
+                        "order_amount",
+                        "order_date",
+                        "order_id"
+                    ]
+                }
+            ],
+            "target_table": {
+                "table_name": "mart.customer_summary",
+                "columns": [
+                    "customer_id",
+                    "first_name",
+                    "last_name",
+                    "total_revenue",
+                    "order_count"
+                ]
+            },
+            "transformations": {
+                "selected_columns": [
+                    "c.customer_id",
+                    "c.first_name",
+                    "c.last_name",
+                    "SUM(o.order_amount) AS total_revenue",
+                    "COUNT(o.order_id) AS order_count"
+                ],
+                "joins": [
+                    "JOIN raw.orders AS o ON c.customer_id = o.customer_id"
+                ],
+                "filters": [
+                    "o.order_date >= '2024-01-01'"
+                ],
+                "aggregations": [
+                    "SUM(o.order_amount)",
+                    "COUNT(o.order_id)"
+                ],
+                "group_by": [
+                    "c.customer_id",
+                    "c.first_name",
+                    "c.last_name"
+                ],
+                "order_by": [],
+                "limit": null
+            },
+            "dependencies": [
+                "mart.customer_summary",
+                "raw.customers AS c",
+                "raw.orders AS o"
+            ],
+            "confidence_score": 0.92,
+            "parser": "sqlglot",
+            "output_file": "C:\\Users\\santo\\DataEngineer\\Trendytech Superstar\\projects\\ai-augmented-data-engineering-platform\\module4_legacy_modernization\\outputs\\sql\\customer_pipeline_analysis.json"
+        },
+        {
+            "artifact_type": "yaml",
+            "file_name": "pipeline_config.yaml",
+            "pipeline_name": "customer_summary_pipeline",
+            "schedule": "daily",
+            "owner": "data_engineering",
+            "sources": [
+                "raw.customers",
+                "raw.orders"
+            ],
+            "target": "mart.customer_summary",
+            "quality_checks": [
+                "customer_id_not_null",
+                "total_revenue_non_negative"
+            ],
+            "dependencies": [
+                "raw.customers",
+                "raw.orders"
+            ],
+            "confidence_score": 0.9,
+            "parser": "pyyaml",
+            "output_file": "C:\\Users\\santo\\DataEngineer\\Trendytech Superstar\\projects\\ai-augmented-data-engineering-platform\\module4_legacy_modernization\\outputs\\yaml\\pipeline_config_analysis.json"
+        }
+    ]
+}
