@@ -3,8 +3,11 @@ import json
 from pathlib import Path
 from typing import Any
 
+#creates jupyter notebooks dynamically
 import nbformat
+#Creates AI agent and Executes AI agent
 from agents import Agent, Runner
+#Loads OpenAI API key
 from dotenv import load_dotenv
 
 
