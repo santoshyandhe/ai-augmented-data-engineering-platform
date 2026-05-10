@@ -22,13 +22,25 @@
         "confidence_score": 1.0
     },
     "comparison_results": {
-        "missing_in_target": [
-            1
-        ],
+        "missing_in_target": [],
         "new_in_target": [
             10
         ],
         "value_mismatches": [
+            {
+                "key": 1,
+                "source_column": "fname",
+                "target_column": "fname",
+                "source_value": "santosh",
+                "target_value": "new"
+            },
+            {
+                "key": 1,
+                "source_column": "last_name",
+                "target_column": "last_name",
+                "source_value": "yandhe",
+                "target_value": "member"
+            },
             {
                 "key": 3,
                 "source_column": "fname",

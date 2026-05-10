@@ -2,8 +2,8 @@ import asyncio
 import json
 from pathlib import Path
 from typing import Any
-import nbformat
 
+import nbformat
 from agents import Agent, Runner
 from dotenv import load_dotenv
 
@@ -47,6 +47,7 @@ def parse_json_output(raw_output: str) -> dict[str, Any]:
 def extract_code_from_notebook_payload(notebook_payload: dict[str, Any]) -> str:
     code_cells = notebook_payload.get("code_cells", [])
     return "\n\n".join(code_cells)
+
 
 def write_notebook(notebook_payload: dict[str, Any]) -> Path:
     notebook = nbformat.v4.new_notebook()
@@ -95,6 +96,7 @@ def write_review_report(review_payload: dict[str, Any]) -> Path:
 
     return output_path
 
+
 async def run_agent_workflow(feature_request: str) -> dict[str, Any]:
     OUTPUTS_DIR.mkdir(exist_ok=True)
 
@@ -119,12 +121,17 @@ async def run_agent_workflow(feature_request: str) -> dict[str, Any]:
     current_feature_request = feature_request
 
     for attempt_number in range(1, max_attempts + 1):
+        print(f"\nRunning attempt {attempt_number}...")
+
         developer_result = await Runner.run(
             developer_agent,
             current_feature_request,
         )
 
-        notebook_payload = parse_json_output(developer_result.final_output)
+        notebook_payload = parse_json_output(
+            developer_result.final_output
+        )
+
         implementation_code = extract_code_from_notebook_payload(
             notebook_payload
         )
@@ -134,7 +141,10 @@ async def run_agent_workflow(feature_request: str) -> dict[str, Any]:
             implementation_code,
         )
 
-        test_payload = parse_json_output(tester_result.final_output)
+        test_payload = parse_json_output(
+            tester_result.final_output
+        )
+
         test_code = test_payload["test_code"]
 
         reviewer_input = f"""
@@ -150,7 +160,9 @@ Pytest test code:
             reviewer_input,
         )
 
-        review_payload = parse_json_output(reviewer_result.final_output)
+        review_payload = parse_json_output(
+            reviewer_result.final_output
+        )
 
         attempt_result = {
             "attempt_number": attempt_number,
@@ -162,16 +174,21 @@ Pytest test code:
         attempts.append(attempt_result)
 
         has_warn_or_fail = any(
-        finding.get("severity") in ["WARN", "FAIL"]
-         for finding in review_payload.get("findings", [])
+            finding.get("severity") in ["WARN", "FAIL"]
+            for finding in review_payload.get("findings", [])
         )
 
-        if review_payload.get("verdict") == "APPROVED" and not has_warn_or_fail:
+        verdict = review_payload.get("verdict")
+
+        if verdict == "APPROVED" and not has_warn_or_fail:
+            print("Reviewer approved the implementation.")
             break
 
-            current_feature_request = f"""
-                Original feature request:
-            {feature_request}
+        print("Reviewer requested changes. Preparing next attempt...")
+
+        current_feature_request = f"""
+Original feature request:
+{feature_request}
 
 The Reviewer Agent requested changes.
 
@@ -182,51 +199,42 @@ Please revise the implementation and fix all WARN and FAIL findings.
 Return the same JSON structure as before.
 """
 
-        final_attempt = attempts[-1]
+    final_attempt = attempts[-1]
 
-        notebook_path = write_notebook(
-            final_attempt["developer_output"]
-            )
+    notebook_path = write_notebook(
+        final_attempt["developer_output"]
+    )
 
-        test_file_path = write_test_file(
-            final_attempt["tester_output"]
-            )
+    test_file_path = write_test_file(
+        final_attempt["tester_output"]
+    )
 
-        review_report_path = write_review_report(
-            final_attempt["reviewer_output"]
-            )
+    review_report_path = write_review_report(
+        final_attempt["reviewer_output"]
+    )
 
+    workflow_result = {
+        "feature_request": feature_request,
+        "final_verdict": final_attempt["reviewer_output"].get("verdict"),
+        "generated_files": {
+            "notebook": str(notebook_path),
+            "test_file": str(test_file_path),
+            "review_report": str(review_report_path),
+        },
+        "attempts": attempts,
+    }
 
-        workflow_result = {
-            "feature_request": feature_request,
-            "final_verdict": attempts[-1]["reviewer_output"].get("verdict"),
-            "generated_files": {
-              "notebook": str(notebook_path),
-             "test_file": str(test_file_path),
-         "review_report": str(review_report_path),
-            },
-            "attempts": attempts,
-}
-        output_path = OUTPUTS_DIR / "agent_workflow_result.json"
-        output_path.write_text(
+    output_path = OUTPUTS_DIR / "agent_workflow_result.json"
+
+    output_path.write_text(
         json.dumps(workflow_result, indent=4),
         encoding="utf-8",
-        )
+    )
 
-        return workflow_result
+    return workflow_result
 
-
-# if __name__ == "__main__":
-#     sample_feature = (
-#         "Create a Python function that calculates simple interest. "
-#         "Inputs are principal, annual_rate, and years. "
-#         "Validate that all inputs are non-negative numbers."
-#     )
-
-#     result = asyncio.run(run_agent_workflow(sample_feature))
 
 if __name__ == "__main__":
-
     feature_request = input(
         "Enter your feature request: "
     )
@@ -238,6 +246,10 @@ if __name__ == "__main__":
     print("\nFinal Verdict:")
     print(result["final_verdict"])
 
+    print("\nGenerated Files:")
+    for file_type, file_path in result["generated_files"].items():
+        print(f"{file_type}: {file_path}")
+
     print("\nFinal Reviewer Output:")
     print(
         json.dumps(
@@ -245,8 +257,3 @@ if __name__ == "__main__":
             indent=4,
         )
     )
-    # print("Final Verdict:")
-    # print(result["final_verdict"])
-
-    # print("\nFinal Reviewer Output:")
-    # print(json.dumps(result["attempts"][-1]["reviewer_output"], indent=4))
